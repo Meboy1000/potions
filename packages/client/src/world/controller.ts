@@ -181,12 +181,27 @@ function collisionListener(physicals: Item[]) {
       }
 
       item.itemType.interactions.forEach((interaction) => {
+        console.log(item);
+        console.log(item.itemType);
+        console.log(item.itemType.interactions);
         if (!interaction.while_carried && item.conditionMet(interaction)) {
-          interactions.push({
-            action: interaction.action,
-            item: item,
-            label: prepInteraction(interaction.description, item)
-          });
+          if(interaction?.while_carrying === undefined){
+            interactions.push({
+              action: interaction.action,
+              item: item,
+              label: prepInteraction(interaction.description, item)
+            });
+          }
+          else if(player.carrying){
+            // && world.items[player.carrying].itemType.name === interaction.while_carrying
+            console.log("carrying:" + world.items[player.carrying].itemType.name);
+            console.log(interaction.while_carrying);
+            interactions.push({
+              action: interaction.action,
+              item: item,
+              label: prepInteraction(interaction.description, item)
+            });
+          }
         }
       });
       items.push(item);
